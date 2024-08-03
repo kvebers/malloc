@@ -1,7 +1,13 @@
-#include "malloc.h"
+#include "../malloc.h"
+#include <stdio.h>
 
 int main()
 {
-    malloc(10);
-    return 0;   
+    {
+    void *ptr = malloc(10);
+    (void)ptr;
+    }
+    {
+        printf("test\n");
+    }
 }

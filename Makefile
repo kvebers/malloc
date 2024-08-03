@@ -1,34 +1,48 @@
-
 ifeq ($(HOSTTYPE),)
-	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
+NAME := libft_malloc_$(HOSTTYPE).so
+SYMLINK := libft_malloc.so
+LIBFT_DIR := libft
+LIBFT := $(LIBFT_DIR)/libft.a
+SRC_DIR := src
+OBJ_DIR := obj
+SRCS := $(SRC_DIR)/malloc.c $(SRC_DIR)/free.c $(SRC_DIR)/realloc.c $(SRC_DIR)/show_alloc_mem.c
+OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+CC := gcc
+CFLAGS := -Wall -Wextra -Werror -fPIC # good for shaderd memory acsess
+LDFLAGS := -shared
 
-SRC =	src/malloc.c
-CC = 		cc
-CFLAG =		-Wall -Wextra -Werror
-RM = 		rm -f
-NAME = 		malloc.a
-OBJ	= $(SRC:.c=.o)
+all: $(LIBFT) $(NAME)
 
-$(NAME): $(OBJ)
-	make -C ./libft
-	cp libft/libft.a $(NAME)
-		@$(AR) -rcs $@ $^
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
 
-%.o : %.c
-	@$(CC) -c $(CFLAG) $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 
-all: $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@ln -sf $(NAME) $(SYMLINK) # creates a symbold link to the library to recogine with -L. -lft_malloc flag 
 
 clean:
-	make clean -C ./libft
-	- @$(RM) $(OBJ)
+	@$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	make fclean -C ./libft
-	- @$(RM) ${NAME}
+	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME) $(SYMLINK)
 
 re: fclean all
 
-.PHONY: all clean fclean re 
+test: all
+	@$(CC) -I $(LIBFT_DIR) -L . -Wl,-rpath,. -lft_malloc test/test.c -o test_this
+	@./test_this
+	@rm -f test_this
+
+example:
+	gcc -o test_malloc1 test/test.c -L. -lft_malloc
+
+.PHONY: all clean fclean re
