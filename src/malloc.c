@@ -6,6 +6,6 @@
 
 void *malloc(size_t size)
 {
-    (void)size;
+    printf("malloc %zu\n", size);
     return NULL;
 }
