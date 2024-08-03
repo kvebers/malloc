@@ -18,7 +18,6 @@ typedef struct chunk {
     int free;
 } chunk_t;
 
-
 # define ALIGN_SIZE 128
 # define TINY 256
 # define SMALL 4096
