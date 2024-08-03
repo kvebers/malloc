@@ -21,7 +21,8 @@ typedef struct chunk {
 
 # define ALIGN_SIZE 128
 # define TINY 256
-# define SMALL 2048
-# define LARGE 4096
+# define SMALL 4096
+# define LARGE (SMALL + 1)
+# define ALLOC_COUNT 100
 
 #endif
