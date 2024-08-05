@@ -30,6 +30,9 @@ extern chunk_t g_chunks;
 void appendChunk(chunk_t *chunk);
 void removeChunk(chunk_t *chunk);
 
+chunk_t *findFreeChunk(size_t size);
+chunk_t *findChunk(void *ptr);
+
 // defines
 # define TINY 256
 # define SMALL 4096

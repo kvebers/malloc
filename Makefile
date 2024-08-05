@@ -8,7 +8,7 @@ LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
 SRC_DIR := src
 OBJ_DIR := obj
-SRCS := $(SRC_DIR)/malloc.c $(SRC_DIR)/free.c $(SRC_DIR)/realloc.c $(SRC_DIR)/show_alloc_mem.c
+SRCS := $(SRC_DIR)/malloc.c $(SRC_DIR)/free.c $(SRC_DIR)/realloc.c $(SRC_DIR)/show_alloc_mem.c $(SRC_DIR)/utils.c
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror -fPIC # good for shaderd memory acsess
