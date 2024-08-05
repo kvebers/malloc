@@ -13,7 +13,7 @@ void *realloc(void *ptr, size_t size);
 // show_alloc_mem.c
 void show_alloc_mem(void);
 
-extern zone_t zones;
+extern zone_t g_zones;
 
 // struct to store the data related to single chunk of memory
 typedef struct chunk {
@@ -25,8 +25,14 @@ typedef struct chunk {
 // struct to stroe the data related all chunks of memory
 typedef struct zone {
     chunk_t *tiny_chunks;
+    size_t total_tiny_memory;
+    size_t total_tiny_chunks;
     chunk_t *small_chunks;
+    size_t total_small_chunks;
+    size_t total_small_memory;
     chunk_t *large_chunks;
+    size_t total_large_memory;
+    size_t total_large_chunks;
 } zone_t;
 
 // utils.c

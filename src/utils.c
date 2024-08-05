@@ -1,10 +1,10 @@
 #include "../malloc.h"
 
-zone_t zones = {NULL, NULL, NULL};
+zone_t g_zones = {NULL, 0, 0, NULL, 0, 0, NULL, 0, 0};
 
 void appendSmallChunk(chunk_t *smallChunk)
 {
-
+    
 }
 
 void appendTinyChunk(chunk_t *tinyChunk)
