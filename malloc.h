@@ -13,35 +13,22 @@ void *realloc(void *ptr, size_t size);
 // show_alloc_mem.c
 void show_alloc_mem(void);
 
-extern zone_t g_zones;
 
 // struct to store the data related to single chunk of memory
 typedef struct chunk {
-    size_t size;
     struct chunk *next;
-    int free;
+    struct chunk *prev;
+    size_t size;
+    size_t zone_of_allocation;
+    int free; // 1 if free, 0 if not
 } chunk_t;
 
 // struct to stroe the data related all chunks of memory
-typedef struct zone {
-    chunk_t *tiny_chunks;
-    size_t total_tiny_memory;
-    size_t total_tiny_chunks;
-    chunk_t *small_chunks;
-    size_t total_small_chunks;
-    size_t total_small_memory;
-    chunk_t *large_chunks;
-    size_t total_large_memory;
-    size_t total_large_chunks;
-} zone_t;
 
+extern chunk_t g_chunks;
 // utils.c
-void appendSmallChunk(chunk_t *smallChunk);
-void appendTinyChunk(chunk_t *tinyChunk);
-void appendLargeChunk(chunk_t *largeChunk);
-void removeSmallChunk(chunk_t *smallChunk);
-void removeTinyChunk(chunk_t *tinyChunk);
-void removeLargeChunk(chunk_t *largeChunk);
+void appendChunk(chunk_t *chunk);
+void removeChunk(chunk_t *chunk);
 
 // defines
 # define TINY 256
