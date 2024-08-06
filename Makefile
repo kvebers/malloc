@@ -40,8 +40,18 @@ re: fclean all
 test: all
 	@$(CC) -I $(LIBFT_DIR) -L . -Wl,-rpath,. -lft_malloc test/test.c -o test_this
 	@./test_this
-	# @valgrind --read-var-info=yes --leak-check=full --track-origins=yes ./test_this
 	@rm -f test_this
+
+
+check_leaks:
+	@$(CC) -I $(LIBFT_DIR) -L . -Wl,-rpath,. -lft_malloc test/test.c -o test_this
+	@valgrind --read-var-info=yes --leak-check=full --track-origins=yes ./test_this
+	@rm -f test_this
+
+run_page_test:
+	@$(CC) -I $(LIBFT_DIR) -L . -Wl,-rpath,. -lft_malloc test/test.c -o test_page
+	 /usr/bin/time -l ./test_page 
+	@rm -f test_page
 
 example:
 	gcc -o test_malloc1 test/test.c -L. -lft_malloc
