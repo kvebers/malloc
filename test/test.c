@@ -44,9 +44,10 @@ int main()
 	    i = 0;
 	    while (i < 1024)
 	    {
-		    test = (char*)malloc(1000);
+		    test = (char*)malloc(5000);
 		    test[0] = 42;
 		    i++;
+            free(test);
 	    }
     }
     {
@@ -56,10 +57,10 @@ int main()
         i = 0;
         while (i < 1024)
         {
-            test = (char*)malloc(1000);
+            test = (char*)malloc(5000);
             test[0] = 42;
             i++;
-            //free
+            free(test);
         }
     }
     {

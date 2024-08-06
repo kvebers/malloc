@@ -3,6 +3,9 @@
 
 
 # include "libft/libft.h"
+#include <unistd.h>
+#include <sys/mman.h>
+#include <stdio.h>
 
 // malloc.c
 void *malloc(size_t size);

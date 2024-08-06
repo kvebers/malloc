@@ -7,7 +7,7 @@ void free(void *ptr) {
     chunk->size = chunk->max_size;
     if (chunk->max_size == TINY || chunk->max_size == SMALL)
     {
-
+        printf("freeing chunk\n");
     }
     else
     {

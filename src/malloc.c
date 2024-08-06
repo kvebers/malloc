@@ -1,6 +1,3 @@
-#include <unistd.h>
-#include <sys/mman.h>
-#include <stdio.h>
 #include "../malloc.h"
 
 static void *allocateMemory(size_t size)

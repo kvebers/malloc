@@ -40,6 +40,7 @@ re: fclean all
 test: all
 	@$(CC) -I $(LIBFT_DIR) -L . -Wl,-rpath,. -lft_malloc test/test.c -o test_this
 	@./test_this
+	# @valgrind --read-var-info=yes --leak-check=full --track-origins=yes ./test_this
 	@rm -f test_this
 
 example:
