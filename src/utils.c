@@ -23,6 +23,7 @@ void appendChunk(chunk_t *chunk)
         chunk_t *current = g_chunks.next;
         while (current->next != NULL) current = current->next;
         current->next = chunk;
+        chunk->prev = current;
     }
 }
 

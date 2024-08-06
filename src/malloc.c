@@ -32,8 +32,21 @@ static void *allocateTiny(size_t size)
 
 static void *allocateSmall(size_t size)
 {
-    (void) size;
-    return NULL;
+    void *ptr = findFreeChunk(SMALL);
+    if (ptr != NULL)
+    {
+        chunk_t *chunk = (chunk_t*)(ptr);
+        chunk->free = 0;
+        chunk->size = size;
+        return (void*)((char*)ptr + sizeof(chunk_t) + 1);
+    }
+    if (ptr == NULL) ptr = allocateMemory(SMALL_SIZE);
+    if (ptr == NULL) return NULL;
+    createLinkedList(ptr, SMALL);
+    chunk_t *chunk = (chunk_t *)ptr;
+    chunk->size = size;
+    chunk->free = 0;
+    return (void*)((char*)ptr + sizeof(chunk_t) + 1);
 }
 
 static void *allocateLarge(size_t size)
