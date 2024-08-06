@@ -11,6 +11,13 @@ int main()
     show_alloc_mem();
     }
     {
-        printf("test\n");
+        printf("=====================================\n");
+        void *ptr = malloc(10);
+        printf("ptr: %p\n", ptr);
+        ptr = malloc(11);
+        printf("ptr: %p\n", ptr);
+        ptr = malloc(12);
+        printf("ptr: %p\n", ptr);
+        show_alloc_mem();
     }
 }
