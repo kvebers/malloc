@@ -45,6 +45,7 @@ static void *allocateSmall(size_t size)
     createLinkedList(ptr, SMALL);
     chunk_t *chunk = (chunk_t *)ptr;
     chunk->size = size;
+    chunk->max_size = SMALL;
     chunk->free = 0;
     return (void*)((char*)ptr + sizeof(chunk_t) + 1);
 }
@@ -60,6 +61,7 @@ static void *allocateLarge(size_t size)
     chunk->free = 0;
     chunk->zone_of_allocation = getAllocationZone();
     chunk->next = NULL;
+    chunk->max_size = size;
     chunk->prev = g_chunks.next;
     appendChunk(chunk);
     return (void*)((char*)ptr + sizeof(chunk_t) + 1);

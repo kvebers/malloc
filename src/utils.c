@@ -55,6 +55,7 @@ void createLinkedList(void *ptr, size_t size) {
     {
         chunk_t *chunk = (chunk_t*)((char*)ptr + (size + sizeof(chunk_t)) * i);
         chunk->size = size;
+        chunk->max_size = size;
         chunk->free = 1;
         chunk->zone_of_allocation = zone;
         chunk->next = NULL;
@@ -63,6 +64,13 @@ void createLinkedList(void *ptr, size_t size) {
         else g_chunks.next = chunk;
         current = chunk;
     }
+}
+
+void removeChunk(chunk_t *chunk)
+{
+    if (chunk->prev != NULL) chunk->prev->next = chunk->next;
+    if (chunk->next != NULL) chunk->next->prev = chunk->prev;
+    
 }
 
 // void removeChunk(chunk_t *chunk)

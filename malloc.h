@@ -19,6 +19,7 @@ typedef struct chunk {
     struct chunk *next;
     struct chunk *prev;
     size_t size;
+    size_t max_size;
     size_t zone_of_allocation;
     int free; // 1 if free, 0 if not
 } chunk_t;
