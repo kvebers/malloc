@@ -84,7 +84,7 @@ int main()
 	// 	    i++;
     //         free(test);
 	//     }
-    // }
+    // // }
     // {
     //     int		i;
     //     char	*test;
@@ -92,11 +92,15 @@ int main()
     //     i = 0;
     //     while (i < 1024)
     //     {
-    //         test = (char*)malloc(5000);
+    //         void *ptr = malloc(1024);
+    //         printf("ptr: %p\n", ptr);
+    //         test = (char*)ptr;
     //         test[0] = 42;
     //         i++;
+            
     //         free(test);
     //     }
+    //     show_alloc_mem();
     // }
     // {
     //     printf("=====================================\n");
