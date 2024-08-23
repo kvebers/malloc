@@ -66,13 +66,6 @@ void createLinkedList(void *ptr, size_t size) {
     }
 }
 
-void removeChunk(chunk_t *chunk)
-{
-    if (chunk->prev != NULL) chunk->prev->next = chunk->next;
-    if (chunk->next != NULL) chunk->next->prev = chunk->prev;
-    munmap(chunk, chunk->max_size + sizeof(chunk_t));
-}
-
 // void removeChunk(chunk_t *chunk)
 // {
 
