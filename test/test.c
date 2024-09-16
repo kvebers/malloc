@@ -2,11 +2,9 @@
 
 int main()
 {
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 200; i++)
     {
         void *ptr = malloc(1024);
-        write(1, "ptr: ", 5);
-        //free(ptr);
     }
     show_alloc_mem();
     // {
