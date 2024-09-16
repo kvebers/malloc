@@ -9,7 +9,7 @@ static void write_int(int n) {
     while (len--) write(1, &buf[len], 1);
 }
 
-static void write_pointer(void *ptr) {
+static void writePointer(void *ptr) {
     intptr_t p = (intptr_t)ptr;
     char hex_digits[] = "0123456789abcdef";
     char buf[18] = "0x0000000000000000";
@@ -18,12 +18,12 @@ static void write_pointer(void *ptr) {
     write(1, buf, 18);
 }
 
-static void write_info(void *main_ptr, void *value_ptr, size_t size, int zone_of_allocation)
+static void writeInfo(void *main_ptr, void *value_ptr, size_t size, int zone_of_allocation)
 {
     write(1, "Ptr: ", 5);
-    write_pointer(main_ptr);
+    writePointer(main_ptr);
     write(1, " - ", 3);
-    write_pointer(value_ptr);
+    writePointer(value_ptr);
     write(1, " | Allocation size: ", 20);
     write_int(size);
     write(1, " bytes ", 7);
@@ -45,10 +45,10 @@ static void show_alloc_helper(char *title, size_t max_size, size_t min_size)
             {
                 zone = current->zone_of_allocation;
                 write(1, "Diffrent Alloc Bloc: ", 21);
-                write_pointer(current);
+                writePointer(current);
                 write(1, "\n", 1);
             }
-            write_info((void*)current, (void *)current + sizeof(chunk_t) + 1, current->size, current->zone_of_allocation);
+            writeInfo((void*)current, (void *)current + sizeof(chunk_t) + 1, current->size, current->zone_of_allocation);
         }
         current = current->next;
     }    

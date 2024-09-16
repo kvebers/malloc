@@ -3,7 +3,13 @@
 static void *allocateMemory(size_t size)
 {
     void *ptr;
-    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); // read/write and memory mapping flags and file descriptor and offset of memory
+    //0 for the system to choose adress, but you can specify an adress
+    //size
+    //read and write acsess will be readable, will be writable
+    //memory mapping flags mapping is private, changes to the mapped memory will be private and set to 0
+    //file descriptor, when -1 no filedescriptor is used if used 2 for example it will use the fd but it will lagg the program
+    //offset of memory this should be 4096 * some_value
+    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
     if (ptr == MAP_FAILED) return NULL;
     return ptr;
 }
