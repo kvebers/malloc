@@ -43,16 +43,16 @@ int main()
     //     printf("=====================================\n");
     // }
     //
-    {
-        void *ptr = malloc(10);
-        void *ptr1 = malloc(11);
-        void *ptr2 = malloc(12);
-        show_alloc_mem();
-        free(ptr);
-        free(ptr1);
-        free(ptr2);
-        printf("=====================================\n");
-    }
+    // {
+    //     void *ptr = malloc(10);
+    //     void *ptr1 = malloc(11);
+    //     void *ptr2 = malloc(12);
+    //     show_alloc_mem();
+    //     free(ptr);
+    //     free(ptr1);
+    //     free(ptr2);
+    //     printf("=====================================\n");
+    // }
     // {
     //     printf("=====================================\n");
     //     void *ptr = malloc(270);
@@ -106,4 +106,6 @@ int main()
     //     printf("=====================================\n");
     //     show_alloc_mem();
     // }
+
+    return 0;
 }

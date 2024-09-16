@@ -46,6 +46,7 @@ void removeNotLargeChunk(chunk_t *chunk);
 # define SMALL (2048 - sizeof(chunk_t))
 # define LARGE (SMALL + 1)
 # define ALLOC_COUNT 16 * 8
+# define MAX_SIZE 4000000000
 #define TINY_SIZE (ALLOC_COUNT * (TINY + sizeof(chunk_t)))
 #define SMALL_SIZE (ALLOC_COUNT * (SMALL + sizeof(chunk_t)))
 #define GET_MEMORY_SIZE(size, alignment) (((size) + (alignment) - 1) & ~((alignment) - 1)) // Operation (and) and operation (not)

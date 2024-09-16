@@ -67,7 +67,7 @@ static void *allocateLarge(size_t size)
 void *malloc(size_t size)
 {
     void *ptr;
-
+    if (size >= MAX_SIZE) return NULL;
     if (size <= 0) return NULL;
     size_t totalSize = size + sizeof(chunk_t);
     if (totalSize <= TINY) ptr = allocateTiny(size);
