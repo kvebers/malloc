@@ -1,5 +1,11 @@
 #include "../malloc.h"
 
+static void write_info(void *mainPtr, void *valuePtr, size_t size, int zone_of_allocation)
+{
+    
+    write(1, " bytes\n", 7);
+}
+
 static void show_alloc_helper(char *title, size_t max_size, size_t min_size)
 {
     int is_changed = 0;
@@ -10,10 +16,10 @@ static void show_alloc_helper(char *title, size_t max_size, size_t min_size)
             if (is_changed == 0)
             {
                 is_changed = 1;
-                ft_printf("Zone of allocation, %s\n", title);
+                write(1, "Zone of allocation: ", 20);
+                write(1, title, 6);
             }
-            ft_printf("%p - %p : %u bytes, %u current_zone_of_allocation\n",
-                (void*)current, (void *)current + sizeof(chunk_t) + 1, current->size, current->zone_of_allocation);
+            write_info((void*)current, (void *)current + sizeof(chunk_t) + 1, current->size, current->zone_of_allocation);
         }
         current = current->next;
     }    
@@ -22,7 +28,7 @@ static void show_alloc_helper(char *title, size_t max_size, size_t min_size)
 
 void show_alloc_mem() 
 {
-    show_alloc_helper("TINY", TINY, 0);
-    show_alloc_helper("SMALL", SMALL, TINY);
-    show_alloc_helper("LARGE", MAX_SIZE, SMALL);
+    show_alloc_helper("TINYY\n", TINY, 0);
+    show_alloc_helper("SMALL\n", SMALL, TINY);
+    show_alloc_helper("LARGE\n", MAX_SIZE, SMALL);
 }

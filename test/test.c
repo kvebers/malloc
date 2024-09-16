@@ -1,8 +1,14 @@
 #include "../malloc.h"
-#include <stdio.h>
 
 int main()
 {
+    for (int i = 0; i < 100; i++)
+    {
+        void *ptr = malloc(1024);
+        write(1, "ptr: ", 5);
+        //free(ptr);
+    }
+    show_alloc_mem();
     // {
     //     // this is the test case for large memory allocation
     //     void *ptr = malloc(4097);
