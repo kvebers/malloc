@@ -46,7 +46,9 @@ run_page_test:
 example: all
 	gcc $(RANDOMFLAGS) test/test.c -o test_malloc1 -L. -lft_malloc
 
+# need to install valgrind && run linux contrainer on mac it will explode
 run_valgrind: test
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./test_this
+
 
 .PHONY: all clean fclean re
