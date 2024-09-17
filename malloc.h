@@ -34,9 +34,11 @@ chunk_t *findFreeChunk(size_t size);
 chunk_t *findChunk(void *ptr);
 int getAllocationZone();
 void removeLargeChunk(chunk_t *chunk);
-void freeNotLargeChunks(size_t chunk_index, chunk_t *chunk);
+void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk);
 void removeNotLargeChunk(chunk_t *chunk);
-
+void writeInfo(void *main_ptr, void *value_ptr, size_t size, int zoneOfAllocation);
+void writePointer(void *ptr);
+void writeInt(int n);
 
 // defines
 # define TINY (256 - sizeof(chunk_t))

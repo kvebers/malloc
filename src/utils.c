@@ -30,10 +30,14 @@ void appendChunk(chunk_t *chunk)
 chunk_t *findChunk(void *ptr)
 {
     chunk_t *current = gChunks.next;
+    int count = 0;
     while (current != NULL) {
-        if ((void*)((char*)current + sizeof(chunk_t) + 1) == ptr) return current;
+        if ((void*)((char*)current + sizeof(chunk_t)) == ptr) return current;
         current = current->next;
+        count++;
     }
+    writeInt(count);
+    write(1, "\n", 1);
     return NULL;
 }
 
@@ -64,4 +68,36 @@ void createLinkedList(void *ptr, size_t size) {
         else gChunks.next = chunk;
         current = chunk;
     }
+}
+
+void writeInt(int n) {
+    char buf[20];
+    int len = 0;
+    if (n == 0) { write(1, "0", 1); return; }
+    if (n < 0) { write(1, "-", 1); n = -n; }
+    while (n > 0) { buf[len++] = '0' + (n % 10); n /= 10; }
+    while (len--) write(1, &buf[len], 1);
+}
+
+void writePointer(void *ptr) {
+    intptr_t p = (intptr_t)ptr;
+    char hex_digits[] = "0123456789abcdef";
+    char buf[18] = "0x0000000000000000";
+    int i;
+    for (i = 17; p > 0 && i > 1; i--) { buf[i] = hex_digits[p % 16]; p /= 16;}
+    write(1, buf, 18);
+}
+
+void writeInfo(void *main_ptr, void *value_ptr, size_t size, int zoneOfAllocation)
+{
+    write(1, "Ptr: ", 5);
+    writePointer(main_ptr);
+    write(1, " - ", 3);
+    writePointer(value_ptr);
+    write(1, " | Allocation size: ", 20);
+    writeInt(size);
+    write(1, " bytes ", 7);
+    write(1, " Zone of Allocation: ", 21);
+    writeInt(zoneOfAllocation);
+    write(1, "\n", 1);
 }

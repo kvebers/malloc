@@ -22,7 +22,7 @@ static void *allocateTiny(size_t size)
         chunk_t *chunk = (chunk_t*)(ptr);
         chunk->free = 0;
         chunk->size = size;
-        return (void*)((char*)ptr + sizeof(chunk_t) + 1);
+        return (void*)((char*)ptr + sizeof(chunk_t));
     }
     if (ptr == NULL) ptr = allocateMemory(TINYSIZE);
     if (ptr == NULL) return NULL;
@@ -30,7 +30,7 @@ static void *allocateTiny(size_t size)
     chunk_t *chunk = (chunk_t *)ptr;
     chunk->size = size;
     chunk->free = 0;
-    return (void*)((char*)ptr + sizeof(chunk_t) + 1);
+    return (void*)((char*)ptr + sizeof(chunk_t));
 }
 
 static void *allocateSmall(size_t size)
@@ -41,7 +41,7 @@ static void *allocateSmall(size_t size)
         chunk_t *chunk = (chunk_t*)(ptr);
         chunk->free = 0;
         chunk->size = size;
-        return (void*)((char*)ptr + sizeof(chunk_t) + 1);
+        return (void*)((char*)ptr + sizeof(chunk_t));
     }
     if (ptr == NULL) ptr = allocateMemory(SMALLSIZE);
     if (ptr == NULL) return NULL;
@@ -50,7 +50,7 @@ static void *allocateSmall(size_t size)
     chunk->size = size;
     chunk->maxSize = SMALL;
     chunk->free = 0;
-    return (void*)((char*)ptr + sizeof(chunk_t) + 1);
+    return (void*)((char*)ptr + sizeof(chunk_t));
 }
 
 static void *allocateLarge(size_t size)
@@ -67,7 +67,7 @@ static void *allocateLarge(size_t size)
     chunk->maxSize = size;
     chunk->prev = gChunks.next;
     appendChunk(chunk);
-    return (void*)((char*)ptr + sizeof(chunk_t) + 1);
+    return (void*)((char*)ptr + sizeof(chunk_t));
 }
 
 void *malloc(size_t size)
