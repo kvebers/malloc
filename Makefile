@@ -9,7 +9,7 @@ OBJ_DIR := obj
 SRCS := $(SRC_DIR)/malloc.c $(SRC_DIR)/free.c $(SRC_DIR)/realloc.c $(SRC_DIR)/show_alloc_mem.c $(SRC_DIR)/utils.c
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -fPIC # helps to generate position inndependent code
+CFLAGS := -Wall -Wextra -Werror -fPIC # helps to generate position inndependent code the fPic flag
 LDFLAGS := -shared # specifies shared library
 RANDOMFLAGS := -Wl,-rpath,. # controls how the libraries are searched for
 LIBRARYFLAGS := -L. -lft_malloc # specifies the library to link against

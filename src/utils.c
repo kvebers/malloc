@@ -81,10 +81,10 @@ void writeInt(int n) {
 
 void writePointer(void *ptr) {
     intptr_t p = (intptr_t)ptr;
-    char hex_digits[] = "0123456789abcdef";
+    char hexDigits[] = "0123456789abcdef";
     char buf[18] = "0x0000000000000000";
     int i;
-    for (i = 17; p > 0 && i > 1; i--) { buf[i] = hex_digits[p % 16]; p /= 16;}
+    for (i = 17; p > 0 && i > 1; i--) { buf[i] = hexDigits[p % 16]; p /= 16;}
     write(1, buf, 18);
 }
 
