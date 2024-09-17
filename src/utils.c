@@ -7,20 +7,20 @@ int getAllocationZone()
     return zone++;
 }
 
-chunk_t g_chunks = {
+chunk_t gChunks = {
     .size = 0,
     .free = 0,
-    .zone_of_allocation = 0,
+    .zoneOfAllocation = 0,
     .next = NULL,
     .prev = NULL,
 };
 
 void appendChunk(chunk_t *chunk)
 {
-    if (g_chunks.next == NULL) {
-        g_chunks.next = chunk;
+    if (gChunks.next == NULL) {
+        gChunks.next = chunk;
     } else {
-        chunk_t *current = g_chunks.next;
+        chunk_t *current = gChunks.next;
         while (current->next != NULL) current = current->next;
         current->next = chunk;
         chunk->prev = current;
@@ -29,7 +29,7 @@ void appendChunk(chunk_t *chunk)
 
 chunk_t *findChunk(void *ptr)
 {
-    chunk_t *current = g_chunks.next;
+    chunk_t *current = gChunks.next;
     while (current != NULL) {
         if ((void*)((char*)current + sizeof(chunk_t) + 1) == ptr) return current;
         current = current->next;
@@ -39,7 +39,7 @@ chunk_t *findChunk(void *ptr)
 
 chunk_t *findFreeChunk(size_t size)
 {
-    chunk_t *current = g_chunks.next;
+    chunk_t *current = gChunks.next;
     while (current != NULL) {
         if (current->free == 1 && current->size == size) return current;
         current = current->next;
@@ -49,24 +49,19 @@ chunk_t *findFreeChunk(size_t size)
 
 void createLinkedList(void *ptr, size_t size) {
     int zone = getAllocationZone();
-    chunk_t *current = &g_chunks;
+    chunk_t *current = &gChunks;
     while (current->next != NULL) current = current->next;
     for (size_t i = 0; i < ALLOC_COUNT; i += 1)
     {
         chunk_t *chunk = (chunk_t*)((char*)ptr + (size + sizeof(chunk_t)) * i);
         chunk->size = size;
-        chunk->max_size = size;
+        chunk->maxSize = size;
         chunk->free = 1;
-        chunk->zone_of_allocation = zone;
+        chunk->zoneOfAllocation = zone;
         chunk->next = NULL;
         chunk->prev = current;
-        if (current != &g_chunks) current->next = chunk;
-        else g_chunks.next = chunk;
+        if (current != &gChunks) current->next = chunk;
+        else gChunks.next = chunk;
         current = chunk;
     }
 }
-
-// void removeChunk(chunk_t *chunk)
-// {
-
-// }

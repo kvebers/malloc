@@ -24,7 +24,7 @@ static void *allocateTiny(size_t size)
         chunk->size = size;
         return (void*)((char*)ptr + sizeof(chunk_t) + 1);
     }
-    if (ptr == NULL) ptr = allocateMemory(TINY_SIZE);
+    if (ptr == NULL) ptr = allocateMemory(TINYSIZE);
     if (ptr == NULL) return NULL;
     createLinkedList(ptr, TINY);
     chunk_t *chunk = (chunk_t *)ptr;
@@ -43,12 +43,12 @@ static void *allocateSmall(size_t size)
         chunk->size = size;
         return (void*)((char*)ptr + sizeof(chunk_t) + 1);
     }
-    if (ptr == NULL) ptr = allocateMemory(SMALL_SIZE);
+    if (ptr == NULL) ptr = allocateMemory(SMALLSIZE);
     if (ptr == NULL) return NULL;
     createLinkedList(ptr, SMALL);
     chunk_t *chunk = (chunk_t *)ptr;
     chunk->size = size;
-    chunk->max_size = SMALL;
+    chunk->maxSize = SMALL;
     chunk->free = 0;
     return (void*)((char*)ptr + sizeof(chunk_t) + 1);
 }
@@ -56,16 +56,16 @@ static void *allocateSmall(size_t size)
 static void *allocateLarge(size_t size)
 {
     void *ptr;
-    size_t alignedMemory = GET_MEMORY_SIZE(size + sizeof(chunk_t), TINY);
+    size_t alignedMemory = GETMEMORYSIZE(size + sizeof(chunk_t), TINY);
     ptr = allocateMemory(alignedMemory);
     if (ptr == NULL) return NULL;
     chunk_t *chunk = (chunk_t *)ptr;
     chunk->size = size;
     chunk->free = 0;
-    chunk->zone_of_allocation = getAllocationZone();
+    chunk->zoneOfAllocation = getAllocationZone();
     chunk->next = NULL;
-    chunk->max_size = size;
-    chunk->prev = g_chunks.next;
+    chunk->maxSize = size;
+    chunk->prev = gChunks.next;
     appendChunk(chunk);
     return (void*)((char*)ptr + sizeof(chunk_t) + 1);
 }
@@ -73,8 +73,8 @@ static void *allocateLarge(size_t size)
 void *malloc(size_t size)
 {
     void *ptr;
-    if (size >= MAX_SIZE) return NULL;
     if (size <= 0) return NULL;
+    if (size >= MAXXSIZE) return NULL;
     size_t totalSize = size + sizeof(chunk_t);
     if (totalSize <= TINY) ptr = allocateTiny(size);
     else if (totalSize <= SMALL) ptr = allocateSmall(size);

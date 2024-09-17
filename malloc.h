@@ -19,14 +19,14 @@ typedef struct chunk {
     struct chunk *next;
     struct chunk *prev;
     size_t size;
-    size_t max_size;
-    size_t zone_of_allocation;
+    size_t maxSize;
+    size_t zoneOfAllocation;
     int free; // 1 if free, 0 if not
 } chunk_t;
 
 // struct to stroe the data related all chunks of memory
 
-extern chunk_t g_chunks;
+extern chunk_t gChunks;
 // utils.c
 void appendChunk(chunk_t *chunk);
 void createLinkedList(void *ptr, size_t size);
@@ -43,9 +43,9 @@ void removeNotLargeChunk(chunk_t *chunk);
 # define SMALL (2048 - sizeof(chunk_t))
 # define LARGE (SMALL + 1)
 # define ALLOC_COUNT 16 * 8
-# define MAX_SIZE 100000000
-#define TINY_SIZE (ALLOC_COUNT * (TINY + sizeof(chunk_t)))
-#define SMALL_SIZE (ALLOC_COUNT * (SMALL + sizeof(chunk_t)))
-#define GET_MEMORY_SIZE(size, alignment) (((size) + (alignment) - 1) & ~((alignment) - 1)) // Operation (and) and operation (not)
+# define MAXXSIZE 100000000
+#define TINYSIZE (ALLOC_COUNT * (TINY + sizeof(chunk_t)))
+#define SMALLSIZE (ALLOC_COUNT * (SMALL + sizeof(chunk_t)))
+#define GETMEMORYSIZE(size, alignment) (((size) + (alignment) - 1) & ~((alignment) - 1)) // Operation (and) and operation (not)
 
 #endif
