@@ -23,6 +23,7 @@ void freeNotLargeChunks(size_t chunk_index, chunk_t *chunk) {
         munmap(chunk, (chunk->maxSize) * ALLOC_COUNT);
     }
 }
+
 void removeLargeChunk(chunk_t *chunk)
 {
     if (chunk->prev != NULL) chunk->prev->next = chunk->next;
@@ -30,7 +31,6 @@ void removeLargeChunk(chunk_t *chunk)
     if (gChunks.next == chunk) gChunks.next = chunk->next;
     if (gChunks.prev == chunk) gChunks.prev = chunk->prev;
     munmap(chunk, chunk->maxSize + sizeof(chunk_t));
-    
 }
 
 void free(void *ptr) {
