@@ -49,6 +49,6 @@ void writeInt(int n);
 #define TINYSIZE (ALLOC_COUNT * (TINY + sizeof(chunk_t)))
 #define SMALLSIZE (ALLOC_COUNT * (SMALL + sizeof(chunk_t)))
 #define GETMEMORYSIZE(size, alignment) (((size) + (alignment) - 1) & ~((alignment) - 1)) // Operation (and) and operation (not)
-#define DEBUG 1
+#define DEBUG 0
 
 #endif

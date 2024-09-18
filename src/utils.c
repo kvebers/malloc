@@ -42,7 +42,8 @@ chunk_t *findChunk(void *ptr)
 chunk_t *findFreeChunk(size_t size)
 {
     chunk_t *current = gChunks.next;
-    while (current != NULL) {
+    while (current != NULL)
+    {
         if (current->free == 1 && current->size == size) return current;
         current = current->next;
     }

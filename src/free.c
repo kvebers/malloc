@@ -1,6 +1,9 @@
 #include "../malloc.h"
 #include <stdio.h>
 
+// extern void *gPtr;
+// extern size_t gSize;
+
 static void debug(void *ptr, size_t freeSize)
 {
     write(1, "\n", 1);
@@ -54,7 +57,7 @@ void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk) {
     }
     if (DEBUG) debug(ptr, freeSize);
     if (ptr == NULL) return;
-    if (munmap((void *)ptr, freeSize) == -1) write(1, "Error\n", 6);
+    munmap(ptr, freeSize);
 }
 
 void removeLargeChunk(chunk_t *chunk)
@@ -64,7 +67,7 @@ void removeLargeChunk(chunk_t *chunk)
     if (gChunks.next == chunk) gChunks.next = chunk->next;
     if (gChunks.prev == chunk) gChunks.prev = chunk->prev;
     if (DEBUG) debug(chunk, chunk->size);
-    munmap(chunk, chunk->size);
+    munmap((void*)chunk, chunk->size);
 }
 
 void free(void *ptr)

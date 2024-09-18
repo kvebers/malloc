@@ -1,6 +1,9 @@
 #include "../malloc.h"
 #include <stdio.h>
 
+// void *gPtr = NULL;
+// size_t gSize = 0;
+
 static void debug(void *ptr, size_t size)
 {
     write(1, "\n", 1);
@@ -24,7 +27,10 @@ static void *allocateMemory(size_t size)
     //memory mapping flags mapping is private, changes to the mapped memory will be private and set to 0
     //file descriptor, when -1 no filedescriptor is used if used 2 for example it will use the fd but it will lagg the program
     //offset of memory this should be 4096 * some_value
-    ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+    // example that shows page reclaims method has faults
+    // gSize = size;
+    // gPtr = ptr;
     if (DEBUG) debug(ptr, size);
     if (ptr == MAP_FAILED) return NULL;
     return ptr;
