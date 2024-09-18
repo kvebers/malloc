@@ -9,7 +9,16 @@ static void *allocateMemory(size_t size)
     //memory mapping flags mapping is private, changes to the mapped memory will be private and set to 0
     //file descriptor, when -1 no filedescriptor is used if used 2 for example it will use the fd but it will lagg the program
     //offset of memory this should be 4096 * some_value
-    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); 
+    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    write(1, "\n", 1);
+    write(1, "\n", 1);
+    write(1, "Free: ", 6);
+    writePointer(ptr);
+    write(1, " - ", 3);
+    writePointer(ptr + size);
+    write(1, " | Size: ", 9);
+    writeInt(size);
+    write(1, " bytes\n", 7);
     if (ptr == MAP_FAILED) return NULL;
     return ptr;
 }

@@ -1,9 +1,7 @@
 #include <stdlib.h>
-#include "malloc.h"
+
 int main()
 {
-    void *ptr = malloc(10);
+    void *ptr = malloc(1700);
     free(ptr);
-    show_alloc_mem();
-    return 0;    
 }

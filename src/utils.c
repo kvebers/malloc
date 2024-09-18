@@ -36,8 +36,6 @@ chunk_t *findChunk(void *ptr)
         current = current->next;
         count++;
     }
-    writeInt(count);
-    write(1, "\n", 1);
     return NULL;
 }
 
