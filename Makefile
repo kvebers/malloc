@@ -9,19 +9,20 @@ OBJ_DIR := obj
 SRCS := $(SRC_DIR)/malloc.c $(SRC_DIR)/free.c $(SRC_DIR)/realloc.c $(SRC_DIR)/show_alloc_mem.c $(SRC_DIR)/utils.c
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -fPIC # helps to generate position inndependent code the fPic flag
+CFLAGS := -Wall -Wextra -Werror -fPIC -I. # helps to generate position inndependent code the fPic flag
 LDFLAGS := -shared # specifies shared library
-RANDOMFLAGS := -Wl,-rpath,. # controls how the libraries are searched for
 LIBRARYFLAGS := -L. -lft_malloc # specifies the library to link against
 
 all: $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
+	@LD_PRELOAD=./libft_malloc.so
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
+	@echo "Creating symlink $(SYMLINK) pointing to $(shell pwd)/$(NAME)"
 	@rm -f $(SYMLINK)
 	@ln -sf $(shell pwd)/$(NAME) $(SYMLINK)
 
@@ -35,20 +36,10 @@ fclean: clean
 
 re: fclean all
 
-test: all
-	$(CC) $(RANDOMFLAGS) -lft_malloc test/test.c -o test_this $(LIBRARYFLAGS)
-
 run_page_test:
-	@$(CC) $(RANDOMFLAGS) test/test.c -o test_page $(LIBRARYFLAGS)
+	@$(CC) test.c -o test_page $(LIBRARYFLAGS)
 	/usr/bin/time -l ./test_page
 	@rm -f test_page
-
-example: all
-	gcc $(RANDOMFLAGS) test/test.c -o test_malloc1 -L. -lft_malloc
-
-# need to install valgrind && run linux contrainer on mac it will explode
-run_valgrind: test
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./test_this
 
 
 .PHONY: all clean fclean re

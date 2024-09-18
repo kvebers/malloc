@@ -13,14 +13,20 @@ void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk) {
         if (current->zoneOfAllocation == chunkIndex && current->free == 1) countFreeChunks++;
         current = current->next;
     }
+    int first = 0;
+    void *ptr;
     if (countFreeChunks == ALLOC_COUNT) {
         current = gChunks.next;
         while (current != NULL) {
             chunk_t *next = current->next;
+            if (current->zoneOfAllocation == chunkIndex && first == 0) {
+                ptr = current;
+                first = 1;
+            } 
             if (current->zoneOfAllocation == chunkIndex) removeNotLargeChunk(current);
             current = next;
         }
-        munmap(chunk, (chunk->maxSize) * ALLOC_COUNT);
+        munmap(ptr, (chunk->maxSize) * ALLOC_COUNT);
     }
 }
 
