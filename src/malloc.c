@@ -1,4 +1,19 @@
 #include "../malloc.h"
+#include <stdio.h>
+
+static void debug(void *ptr, size_t size)
+{
+    write(1, "\n", 1);
+    write(1, "\n", 1);
+    write(1, "Malloc: ", 6);
+    writePointer(ptr);
+    write(1, " - ", 3);
+    writePointer(ptr + size);
+    write(1, " | Size: ", 9);
+    writeInt(size);
+    write(1, " bytes\n", 7);
+}
+
 
 static void *allocateMemory(size_t size)
 {
@@ -9,16 +24,8 @@ static void *allocateMemory(size_t size)
     //memory mapping flags mapping is private, changes to the mapped memory will be private and set to 0
     //file descriptor, when -1 no filedescriptor is used if used 2 for example it will use the fd but it will lagg the program
     //offset of memory this should be 4096 * some_value
-    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    write(1, "\n", 1);
-    write(1, "\n", 1);
-    write(1, "Free: ", 6);
-    writePointer(ptr);
-    write(1, " - ", 3);
-    writePointer(ptr + size);
-    write(1, " | Size: ", 9);
-    writeInt(size);
-    write(1, " bytes\n", 7);
+    ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    if (DEBUG) debug(ptr, size);
     if (ptr == MAP_FAILED) return NULL;
     return ptr;
 }
@@ -65,15 +72,16 @@ static void *allocateSmall(size_t size)
 static void *allocateLarge(size_t size)
 {
     void *ptr;
-    size_t alignedMemory = GETMEMORYSIZE(size + sizeof(chunk_t), TINY);
+    size_t pageSize = getpagesize();
+    size_t alignedMemory = GETMEMORYSIZE(size + sizeof(chunk_t), pageSize);
     ptr = allocateMemory(alignedMemory);
     if (ptr == NULL) return NULL;
     chunk_t *chunk = (chunk_t *)ptr;
-    chunk->size = size;
+    chunk->size = alignedMemory;
     chunk->free = 0;
     chunk->zoneOfAllocation = getAllocationZone();
     chunk->next = NULL;
-    chunk->maxSize = size;
+    chunk->maxSize = alignedMemory;
     chunk->prev = gChunks.next;
     appendChunk(chunk);
     return (void*)((char*)ptr + sizeof(chunk_t));

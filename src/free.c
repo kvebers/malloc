@@ -1,4 +1,18 @@
 #include "../malloc.h"
+#include <stdio.h>
+
+static void debug(void *ptr, size_t freeSize)
+{
+    write(1, "\n", 1);
+    write(1, "\n", 1);
+    write(1, "Munmap: ", 8);
+    writePointer(ptr);
+    write(1, " - ", 3);
+    writePointer(ptr + freeSize);
+    write(1, " | Size: ", 9);
+    writeInt(freeSize);
+    write(1, " bytes\n", 7);
+}
 
 void removeNotLargeChunk(chunk_t *chunk)
 {
@@ -29,7 +43,6 @@ void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk) {
     if (chunk->maxSize == TINY) freeSize = TINYSIZE;
     else if (chunk->maxSize == SMALL) freeSize = SMALLSIZE;
     void *ptr = findZoneAllocationFirst(chunkIndex);
-    if (ptr == NULL) return;
     if (countFreeChunks == ALLOC_COUNT) {
         current = gChunks.next;
         while (current != NULL)
@@ -39,17 +52,9 @@ void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk) {
             current = next;
         }
     }
-    write(1, "\n", 1);
-    write(1, "\n", 1);
-    write(1, "Munmap: ", 8);
-    writePointer(ptr);
-    write(1, " - ", 3);
-    writePointer(ptr + freeSize);
-    write(1, " | Size: ", 9);
-    writeInt(freeSize);
-    write(1, " bytes\n", 7);
-    
-    if (munmap(ptr, freeSize) == -1) write(1, "Error\n", 6);
+    if (DEBUG) debug(ptr, freeSize);
+    if (ptr == NULL) return;
+    if (munmap((void *)ptr, freeSize) == -1) write(1, "Error\n", 6);
 }
 
 void removeLargeChunk(chunk_t *chunk)
@@ -58,10 +63,12 @@ void removeLargeChunk(chunk_t *chunk)
     if (chunk->next != NULL) chunk->next->prev = chunk->prev;
     if (gChunks.next == chunk) gChunks.next = chunk->next;
     if (gChunks.prev == chunk) gChunks.prev = chunk->prev;
-    munmap(chunk + 1, GETMEMORYSIZE(chunk->size + sizeof(chunk_t), 4096));
+    if (DEBUG) debug(chunk, chunk->size);
+    munmap(chunk, chunk->size);
 }
 
-void free(void *ptr) {
+void free(void *ptr)
+{
     if (ptr == NULL) return;
     chunk_t *chunk = findChunk(ptr);
     if (chunk == NULL) return;
