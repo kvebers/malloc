@@ -22,7 +22,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
-	@echo "Creating symlink $(SYMLINK) pointing to $(shell pwd)/$(NAME)"
 	@rm -f $(SYMLINK)
 	@ln -sf $(shell pwd)/$(NAME) $(SYMLINK)
 
@@ -33,6 +32,7 @@ fclean: clean
 	@rm -f $(NAME) $(SYMLINK)
 	@rm -f test_this
 	@rm -f test_malloc1
+	@rm -f test_page
 
 re: fclean all
 
