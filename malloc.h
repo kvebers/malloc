@@ -42,13 +42,13 @@ void writeInt(int n);
 
 // defines
 # define TINY (256 - sizeof(chunk_t))
-# define SMALL (2048 - sizeof(chunk_t))
+# define SMALL (1152 - sizeof(chunk_t))
 # define LARGE (SMALL + 1)
 # define ALLOC_COUNT 16 * 8
 # define MAXXSIZE 200000000
-#define TINYSIZE (ALLOC_COUNT * (TINY + sizeof(chunk_t)))
-#define SMALLSIZE (ALLOC_COUNT * (SMALL + sizeof(chunk_t)))
 #define GETMEMORYSIZE(size, alignment) (((size) + (alignment) - 1) & ~((alignment) - 1)) // Operation (and) and operation (not)
+#define TINYSIZE (GETMEMORYSIZE(ALLOC_COUNT * (TINY + sizeof(chunk_t)), 4096))
+#define SMALLSIZE (GETMEMORYSIZE(ALLOC_COUNT * (SMALL + sizeof(chunk_t)), 4096))
 #define DEBUG 0
 
 #endif
