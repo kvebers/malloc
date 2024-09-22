@@ -21,6 +21,8 @@ void removeNotLargeChunk(chunk_t *chunk)
 {
     if (chunk->prev != NULL) chunk->prev->next = chunk->next;
     if (chunk->next != NULL) chunk->next->prev = chunk->prev;
+    if (gChunks.next == chunk) gChunks.next = chunk->next;
+    if (gChunks.prev == chunk) gChunks.prev = chunk->prev;
 }
 
 static void *findZoneAllocationFirst(size_t zone)
@@ -43,6 +45,7 @@ void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk) {
         current = current->next;
     }
     size_t freeSize = 0;
+    if (countFreeChunks < ALLOC_COUNT) return;
     if (chunk->maxSize == TINY) freeSize = TINYSIZE;
     else if (chunk->maxSize == SMALL) freeSize = SMALLSIZE;
     void *ptr = findZoneAllocationFirst(chunkIndex);
@@ -57,7 +60,7 @@ void freeNotLargeChunks(size_t chunkIndex, chunk_t *chunk) {
     }
     if (DEBUG) debug(ptr, freeSize);
     if (ptr == NULL) return;
-    munmap(ptr, freeSize);
+    munmap((void *)ptr, freeSize);
 }
 
 void removeLargeChunk(chunk_t *chunk)
